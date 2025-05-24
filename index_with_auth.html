@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Bell</title>
+    <link rel="stylesheet" href="style_with_auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Authentication Overlay -->
+    <div id="authOverlay" class="auth-overlay">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="auth-icon">🎂</div>
+                <h2 class="auth-title">Birthday Bell</h2>
+                <p class="auth-subtitle">Never miss a special day again!</p>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="loginForm" class="auth-form active">
+                <h3>Welcome Back!</h3>
+                <form id="loginFormElement">
+                    <div class="input-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="Enter your email">
+                        <span class="input-icon">📧</span>
+                    </div>
+                    <div class="input-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                        <span class="input-icon">🔒</span>
+                        <button type="button" class="password-toggle" onclick="togglePassword('loginPassword')">👁️</button>
+                    </div>
+                    <button type="submit" class="auth-btn login-btn">
+                        <span class="btn-text">Sign In</span>
+                        <span class="btn-icon">🚀</span>
+                    </button>
+                </form>
+                <p class="auth-switch">
+                    Don't have an account? 
+                    <button type="button" onclick="switchToSignup()" class="switch-btn">Sign Up</button>
+                </p>
+            </div>
+            
+            <!-- Signup Form -->
+            <div id="signupForm" class="auth-form">
+                <h3>Join Birthday Bell!</h3>
+                <form id="signupFormElement">
+                    <div class="input-group">
+                        <label for="signupName">Full Name</label>
+                        <input type="text" id="signupName" required placeholder="Enter your full name">
+                        <span class="input-icon">👤</span>
+                    </div>
+                    <div class="input-group">
+                        <label for="signupEmail">Email</label>
+                        <input type="email" id="signupEmail" required placeholder="Enter your email">
+                        <span class="input-icon">📧</span>
+                    </div>
+                    <div class="input-group">
+                        <label for="signupPassword">Password</label>
+                        <input type="password" id="signupPassword" required placeholder="Create a password" minlength="6">
+                        <span class="input-icon">🔒</span>
+                        <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">👁️</button>
+                    </div>
+                    <div class="input-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" id="confirmPassword" required placeholder="Confirm your password" minlength="6">
+                        <span class="input-icon">🔐</span>
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+                    </div>
+                    <button type="submit" class="auth-btn signup-btn">
+                        <span class="btn-text">Create Account</span>
+                        <span class="btn-icon">✨</span>
+                    </button>
+                </form>
+                <p class="auth-switch">
+                    Already have an account? 
+                    <button type="button" onclick="switchToLogin()" class="switch-btn">Sign In</button>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Floating elements for auth screen -->
+        <div class="auth-balloons">
+            <div class="auth-balloon auth-balloon-1"></div>
+            <div class="auth-balloon auth-balloon-2"></div>
+            <div class="auth-balloon auth-balloon-3"></div>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="mainApp" class="container" style="display: none;">
+        <!-- Floating balloons -->
+        <div class="balloon balloon-1"></div>
+        <div class="balloon balloon-2"></div>
+        
+        <!-- Header -->
+        <header class="header">
+            <div class="user-info">
+                <span id="welcomeUser" class="welcome-text">Welcome back!</span>
+                <button id="logoutBtn" class="logout-btn" onclick="logout()">
+                    <span>Logout</span>
+                    <span>🚪</span>
+                </button>
+            </div>
+            <div class="cake-icon">🎂</div>
+            <h1 class="title">Birthday Bell</h1>
+            <p class="subtitle">Never miss a special day again!</p>
+        </header>
+        
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-btn active">Birthdays</button>
+            <button class="nav-btn">Friends</button>
+            <button class="nav-btn">Messages</button>
+        </nav>
+        
+        <!-- Main content -->
+        <main class="main">
+            <!-- Birthdays Section -->
+            <section id="birthdaysSection" class="section active">
+                <div class="cards-container">
+                    <div class="card add-birthday-card">
+                        <div class="card-header">
+                            <h2>Add New Birthday</h2>
+                            <div class="birthday-illustration">
+                                <div class="cake">🎂</div>
+                                <div class="party-hat">🎉</div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label for="name">Name:</label>
+                                <input type="text" id="name" placeholder="Enter name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="birthday">Birthday:</label>
+                                <input type="date" id="birthday" required>
+                            </div>
+                            <button onclick="addBirthday()" class="add-btn">
+                                <span>Add Birthday</span>
+                                <span class="btn-icon">🎈</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card saved-birthdays-card">
+                        <div class="card-header">
+                            <h2>Saved Birthdays</h2>
+                            <div class="filter-options">
+                                <button class="filter-btn active" onclick="filterBirthdays('name')">Sort by Name</button>
+                                <button class="filter-btn" onclick="filterBirthdays('date')">Sort by Date</button>
+                                <button class="filter-btn" onclick="filterBirthdays('upcoming')">Show Upcoming</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div id="birthdaysList" class="birthdays-list">
+                                <!-- Birthdays will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Friends Section -->
+            <section id="friendsSection" class="section">
+                <div class="cards-container">
+                    <div class="card add-friend-card">
+                        <div class="card-header">
+                            <h2>Add New Friend</h2>
+                            <div class="friend-illustration">
+                                <div class="friend-icon">👥</div>
+                                <div class="heart-icon">💝</div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label for="friendName">Name:</label>
+                                <input type="text" id="friendName" placeholder="Enter friend's name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="friendPhone">Phone:</label>
+                                <input type="tel" id="friendPhone" placeholder="Enter phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="friendWhatsApp">WhatsApp:</label>
+                                <input type="tel" id="friendWhatsApp" placeholder="Enter WhatsApp number">
+                            </div>
+                            <div class="form-group">
+                                <label for="friendDOB">Date of Birth:</label>
+                                <input type="date" id="friendDOB" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="friendPhoto">Photo:</label>
+                                <input type="file" id="friendPhoto" accept="image/*">
+                            </div>
+                            <button onclick="addFriend()" class="add-btn">
+                                <span>Add Friend</span>
+                                <span class="btn-icon">👫</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="card saved-friends-card">
+                        <div class="card-header">
+                            <h2>My Friends</h2>
+                            <div class="filter-options">
+                                <button class="filter-btn active" onclick="filterFriends('name')">Sort by Name</button>
+                                <button class="filter-btn" onclick="filterFriends('birthday')">Sort by Birthday</button>
+                                <button class="filter-btn" onclick="filterFriends('recent')">Recently Added</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div id="friendsList" class="friends-list">
+                                <!-- Friends will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Messages Section -->
+            <section id="messagesSection" class="section">
+                <div class="cards-container">
+                    <div class="card send-message-card">
+                        <div class="card-header">
+                            <h2>Send Birthday Wishes</h2>
+                            <div class="message-illustration">
+                                <div class="message-icon">💌</div>
+                                <div class="phone-icon">📱</div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div class="form-group">
+                                <label for="selectFriend">Select Friend:</label>
+                                <select id="selectFriend" required>
+                                    <option value="">Choose a friend...</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="messageText">Message:</label>
+                                <textarea id="messageText" placeholder="Type your birthday wishes here..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="messageTemplate">Quick Templates:</label>
+                                <select id="messageTemplate" onchange="useTemplate()">
+                                    <option value="">Choose a template...</option>
+                                    <option value="template1">Happy Birthday Template 1</option>
+                                    <option value="template2">Happy Birthday Template 2</option>
+                                    <option value="template3">Happy Birthday Template 3</option>
+                                    <option value="template4">Happy Birthday Template 4</option>
+                                </select>
+                            </div>
+                            <div class="message-buttons">
+                                <button onclick="sendWhatsAppMessage()" class="send-btn whatsapp-btn">
+                                    <span class="btn-icon">📱</span>
+                                    <span>Send via WhatsApp</span>
+                                </button>
+                                <button onclick="sendSMSMessage()" class="send-btn sms-btn">
+                                    <span class="btn-icon">💬</span>
+                                    <span>Send via SMS</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card message-history-card">
+                        <div class="card-header">
+                            <h2>Message History</h2>
+                            <div class="filter-options">
+                                <button class="filter-btn active" onclick="filterMessages('recent')">Recent</button>
+                                <button class="filter-btn" onclick="filterMessages('whatsapp')">WhatsApp</button>
+                                <button class="filter-btn" onclick="filterMessages('sms')">SMS</button>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            <div id="messageHistory" class="message-history">
+                                <!-- Message history will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Confetti container -->
+    <div id="confetti-container"></div>
+
+    <script src="script_with_auth.js"></script>
+</body>
+</html>
